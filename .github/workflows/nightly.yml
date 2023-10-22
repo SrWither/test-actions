@@ -56,22 +56,31 @@ jobs:
           zip -r ${{ matrix.platform.name }}.zip target/${{ matrix.platform.target }}/release/${{ matrix.platform.bin }}
           mkdir -p builds
           mv ${{ matrix.platform.name }}.zip builds/
+      - name: 'Upload Artifact'
+        uses: actions/upload-artifact@v3
+        with:
+          name: nightly-builds
+          path: builds/${{ matrix.platform.name }}.zip
+          retention-days: 1
 
   deploy:
     name: Deploy Nightly
     needs: build
     runs-on: ubuntu-20.04
     steps:
+      - name: Download a single artifact
+        uses: actions/download-artifact@v3
+        with:
+          name: nightly-builds
+          path: builds
       - name: Update Nightly Release
-        #uses: andelf/nightly-release@main
-        run: |
-          ls
-        #env:
-        #  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        #with:
-        #  tag_name: nightly
-        #  name: 'Deploy Nightly $$'
-        #  prerelease: true
-        #  body: 'TODO: Add nightly release notes'
-        #  files: |
-        #    ./builds/*.zip
+        uses: andelf/nightly-release@main
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: nightly
+          name: 'Deploy Nightly $$'
+          prerelease: true
+          body: 'TODO: Add nightly release notes'
+          files: |
+            ./builds/*.zip
