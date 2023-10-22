@@ -43,7 +43,7 @@ jobs:
           strip: true
       - name: Create ZIP
         run: |
-          if [[ "${runner.os}" == "Windows" ]]; then
+          if [ "$RUNNER_OS" == "Windows" ]; then
             Compress-Archive -Path target/${{ matrix.platform.target }}/release/${{ matrix.platform.bin }} -Destination ${{ matrix.platform.name }}.zip
             mkdir -p builds
             mv ${{ matrix.platform.name }}.zip builds/
