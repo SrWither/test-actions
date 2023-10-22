@@ -2,83 +2,22 @@ name: Build and Release
 
 on:
   release:
-    types:
-      - created
+    types: [created]
 
 jobs:
-  build-and-release:
+  release:
+    name: release ${{ matrix.target }}
     runs-on: ubuntu-latest
-
+    strategy:
+      fail-fast: false
+      matrix:
+        target: [x86_64-pc-windows-gnu, x86_64-unknown-freebsd, x86_64-apple-darwin, x86_64-unknown-linux-gnu]
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
-
-      - name: Set up Rust
-        uses: actions-rs/toolchain@v1
-        with:
-          toolchain: stable
-          override: true
-
-      - name: Build for Windows
-        run: cargo build --release --target x86_64-pc-windows-msvc
-        working-directory: ${{ github.workspace }}
-      
-      - name: Build for macOS
-        run: cargo build --release --target x86_64-apple-darwin
-        working-directory: ${{ github.workspace }}
-
-      - name: Build for Linux
-        run: cargo build --release --target x86_64-unknown-linux-gnu
-        working-directory: ${{ github.workspace }}
-
-      - name: Build for BSD
-        run: cargo build --release --target x86_64-unknown-freebsd
-        working-directory: ${{ github.workspace }}
-
-      - name: Create Releases
-        id: create_release
-        uses: softprops/action-gh-release@v1
-        with:
-          files: |
-            ./target/x86_64-pc-windows-msvc/release/rs.exe
-            ./target/x86_64-apple-darwin/release/rs
-            ./target/x86_64-unknown-linux-gnu/release/rs
-            ./target/x86_64-unknown-freebsd/release/rs
+      - uses: actions/checkout@master
+      - name: Compile and release
+        uses: rust-build/rust-build.action@v1.4.3
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Get the upload URL for assets
-        id: upload-url
-        run: echo "::set-output name=upload_url::$(jq -r '.upload_url' ${{ steps.create_release.outputs.response }} | sed -e 's/{?name,label}//')"
-        
-      - name: Upload Windows Artifact
-        if: success() && runner.os == 'Windows'
-        run: |
-          curl -X POST ${{ steps.upload-url.outputs.upload_url }}?name=rs.exe\
-            --data-binary @./target/x86_64-pc-windows-msvc/release/rs.exe\
-            -H "Content-Type: application/octet-stream"
-          echo "Uploaded Windows Artifact"
-
-      - name: Upload macOS Artifact
-        if: success() && runner.os == 'Linux'
-        run: |
-          curl -X POST ${{ steps.upload-url.outputs.upload_url }}?name=rs\
-            --data-binary @./target/x86_64-apple-darwin/release/rs\
-            -H "Content-Type: application/octet-stream"
-          echo "Uploaded macOS Artifact"
-
-      - name: Upload Linux Artifact
-        if: success() && runner.os == 'Linux'
-        run: |
-          curl -X POST ${{ steps.upload-url.outputs.upload_url }}?name=rs\
-            --data-binary @./target/x86_64-unknown-linux-gnu/release/rs\
-            -H "Content-Type: application/octet-stream"
-          echo "Uploaded Linux Artifact"
-
-      - name: Upload BSD Artifact
-        if: success() && runner.os == 'Linux'
-        run: |
-          curl -X POST ${{ steps.upload-url.outputs.upload_url }}?name=rs\
-            --data-binary @./target/x86_64-unknown-freebsd/release/rs\
-            -H "Content-Type: application/octet-stream"
-          echo "Uploaded BSD Artifact"
+        with:
+          RUSTTARGET: ${{ matrix.target }}
+          EXTRA_FILES: "README.md LICENSE"
