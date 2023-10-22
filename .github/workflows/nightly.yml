@@ -64,6 +64,8 @@ jobs:
     steps:
       - name: Update Nightly Release
         uses: andelf/nightly-release@main
+        run: |
+          ls
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
