@@ -41,7 +41,7 @@ jobs:
         with:
           command: ${{ matrix.platform.command }}
           target: ${{ matrix.platform.target }}
-          args: "--locked --release"
+          args: "--release"
           strip: true
       - name: Upload binaries to release
         uses: svenstaro/upload-release-action@v2
