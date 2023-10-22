@@ -43,12 +43,19 @@ jobs:
           strip: true
       - name: Create ZIP
         run: |
-          zip -r ${{ matrix.platform.name}}.zip target/${{ matrix.platform.target }}/release/${{ matrix.platform.bin }}
-          mkdir -p builds
-          mv ${{ matrix.platform.name}}.zip builds/
+          if [[ "${runner.os}" == "Windows" ]]; then
+            Compress-Archive -Path target/${{ matrix.platform.target }}/release/${{ matrix.platform.bin }} -Destination ${{ matrix.platform.name }}.zip
+            mkdir -p builds
+            mv ${{ matrix.platform.name }}.zip builds/
+          else
+            zip -r ${{ matrix.platform.name }}.zip target/${{ matrix.platform.target }}/release/${{ matrix.platform.bin }}
+            mkdir -p builds
+            mv ${{ matrix.platform.name }}.zip builds/
+          fi
 
   deploy:
     name: Deploy Nightly
+    needs: build
     runs-on: ubuntu-20.04
     steps:
       - name: Update Nightly Release
