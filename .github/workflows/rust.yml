@@ -14,21 +14,21 @@ jobs:
             os: ubuntu-20.04
             target: x86_64-unknown-freebsd
             bin: rs
-            name: rs-FreeBSD-x86_64
+            name: rs-freebsd-x86_64
             command: build
 
           - release_for: Windows-x86_64
             os: windows-latest
             target: x86_64-pc-windows-msvc
             bin: rs.exe
-            name: rs-Windows-x86_64
+            name: rs-windows-x86_64.exe
             command: both
 
           - release_for: macOS-x86_64
             os: macOS-latest
             target: x86_64-apple-darwin
             bin: rs
-            name: rs-Darwin-x86_64
+            name: rs-darwin-x86_64
             command: both
 
 
