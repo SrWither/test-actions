@@ -63,15 +63,15 @@ jobs:
     runs-on: ubuntu-20.04
     steps:
       - name: Update Nightly Release
-        uses: andelf/nightly-release@main
+        #uses: andelf/nightly-release@main
         run: |
           ls
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          tag_name: nightly
-          name: 'Deploy Nightly $$'
-          prerelease: true
-          body: 'TODO: Add nightly release notes'
-          files: |
-            ./builds/*.zip
+        #env:
+        #  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        #with:
+        #  tag_name: nightly
+        #  name: 'Deploy Nightly $$'
+        #  prerelease: true
+        #  body: 'TODO: Add nightly release notes'
+        #  files: |
+        #    ./builds/*.zip
