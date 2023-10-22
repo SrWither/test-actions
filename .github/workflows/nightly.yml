@@ -1,9 +1,9 @@
-name: Build and Release
+name: Deploy Nightly
 
 on: [push]
 
 jobs:
-  release:
+  build:
     name: Release - ${{ matrix.platform.release_for }}
     strategy:
       matrix:
@@ -41,13 +41,24 @@ jobs:
           target: ${{ matrix.platform.target }}
           args: "--release"
           strip: true
+      - name: Create ZIP
+        run: |
+          zip -r ${{ matrix.platform.name}}.zip target/${{ matrix.platform.target }}/release/${{ matrix.platform.bin }}
+          mkdir -p builds
+          mv ${{ matrix.platform.name}}.zip builds/
+
+  deploy:
+    name: Deploy Nightly
+    runs-on: ubuntu-20.04
+    steps:
       - name: Update Nightly Release
         uses: andelf/nightly-release@main
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           tag_name: nightly
-          name: 'App Nightly Release $$'
+          name: 'Deploy Nightly $$'
           prerelease: true
           body: 'TODO: Add nightly release notes'
-          files: target/${{ matrix.platform.target }}/release/${{ matrix.platform.bin }}
+          files: |
+            ./builds/*.zip
