@@ -6,7 +6,7 @@ on:
 
 jobs:
   build:
-    name: Release - ${{ matrix.platform.release_for }}
+    name: Build - ${{ matrix.platform.release_for }}
     strategy:
       matrix:
         platform:
