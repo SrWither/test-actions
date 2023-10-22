@@ -41,17 +41,21 @@ jobs:
           target: ${{ matrix.platform.target }}
           args: "--release"
           strip: true
-      - name: Create ZIP
+      - name: Create ZIP (Windows)
+        if: matrix.platform.os == 'windows-latest'
         run: |
-          if [ "$RUNNER_OS" == "Windows" ]; then
-            Compress-Archive -Path target/${{ matrix.platform.target }}/release/${{ matrix.platform.bin }} -Destination ${{ matrix.platform.name }}.zip
-            mkdir -p builds
-            mv ${{ matrix.platform.name }}.zip builds/
-          else
-            zip -r ${{ matrix.platform.name }}.zip target/${{ matrix.platform.target }}/release/${{ matrix.platform.bin }}
-            mkdir -p builds
-            mv ${{ matrix.platform.name }}.zip builds/
-          fi
+          Compress-Archive -Path target/${{ matrix.platform.target }}/release/${{ matrix.platform.bin }} -Destination ${{ matrix.platform.name }}.zip
+          if (!(Test-Path -Path "builds")) {
+            New-Item -ItemType Directory -Path "builds"
+          }
+          Move-Item -Path ${{ matrix.platform.name }}.zip -Destination "builds/"
+      
+      - name: Create ZIP (Posix)
+        if: matrix.platform.os != 'windows-latest'
+        run: |
+          zip -r ${{ matrix.platform.name }}.zip target/${{ matrix.platform.target }}/release/${{ matrix.platform.bin }}
+          mkdir -p builds
+          mv ${{ matrix.platform.name }}.zip builds/
 
   deploy:
     name: Deploy Nightly
