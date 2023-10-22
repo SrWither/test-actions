@@ -104,14 +104,14 @@ jobs:
       - name: Package
         shell: bash
         run: |
-          #strip target/${{ matrix.target }}/release/testmest
+          #strip target/${{ matrix.target }}/release/rs
           cd target/${{ matrix.target }}/release          
-          tar czvf ../../../testmest-${{ matrix.target }}.tar.gz testmest
+          tar czvf ../../../rs-${{ matrix.target }}.tar.gz rs
           cd -
       - name: Publish
         uses: softprops/action-gh-release@v1
         # TODO: if any of the build step fails, the release should be deleted.
         with:
-            files: 'testmest*'
+            files: 'rs*'
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
