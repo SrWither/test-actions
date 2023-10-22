@@ -44,9 +44,10 @@ jobs:
           args: "--locked --release"
           strip: true
       - name: Upload binaries to release
-        uses: svenstaro/upload-release-action@v2
+        uses: xresloader/upload-to-github-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          repo_token: ${{ secrets.GITHUB_TOKEN }}
-          file: target/${{ matrix.platform.target }}/release/${{ matrix.platform.bin }}
-          asset_name: ${{ matrix.platform.name }}
-          tag: ${{ github.ref }}
+          file: "target/${{ matrix.platform.target }}/release/${{ matrix.platform.bin }}"
+          tags: true
+          draft: true
