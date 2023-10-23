@@ -30,5 +30,5 @@ runs:
       uses: actions/upload-artifact@v3
       with:
         name: release-builds
-        path: builds/mvt-rs-freebsd-x86_64.zip
+        path: builds/rs-freebsd-x86_64.zip
         retention-days: 1
