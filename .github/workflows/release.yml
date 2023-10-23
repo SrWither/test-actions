@@ -33,14 +33,14 @@ jobs:
       - name: Build Linux Release
         uses: ./.github/workflows/deployment/release/linux
 
-  build-freebsd:
-    runs-on: macos-12
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v3
-
-      - name: Build FreeBSD Release
-        uses: ./.github/workflows/deployment/release/freebsd
+  # build-freebsd:
+  #   runs-on: macos-12
+  #   steps:
+  #     - name: Checkout
+  #       uses: actions/checkout@v3
+  #
+  #     - name: Build FreeBSD Release
+  #       uses: ./.github/workflows/deployment/release/freebsd
 
 
   deploy:
@@ -49,7 +49,7 @@ jobs:
       - build-windows
       - build-macos
       - build-linux
-      - build-freebsd
+      # - build-freebsd
     runs-on: ubuntu-20.04
     steps:
     - name: Download a single artifact
