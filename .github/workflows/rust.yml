@@ -14,6 +14,7 @@ jobs:
 
       - name: Build Windows Release
         uses: ./.github/workflows/deployment/release/windows
+
   build-macos:
     runs-on: macos-latest
     steps:
@@ -22,6 +23,7 @@ jobs:
 
       - name: Build MacOs Release
         uses: ./.github/workflows/deployment/release/macos
+
   build-linux:
     runs-on: ubuntu-latest
     steps:
@@ -30,7 +32,15 @@ jobs:
 
       - name: Build Linux Release
         uses: ./.github/workflows/deployment/release/linux
-  # freebsd:
+
+  build-freebsd:
+    runs-on: macos-12
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Build FreeBSD Release
+        uses: ./.github/workflows/deployment/release/freebsd
 
 
   deploy:
