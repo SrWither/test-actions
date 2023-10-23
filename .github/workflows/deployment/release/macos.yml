@@ -1,0 +1,35 @@
+name: Release - macOS-x86_64
+
+on:
+  push:
+    tags-ignore:
+      - "nightly*"
+
+jobs:
+  build-macos:
+    runs-on: macos-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Build binary
+        uses: houseabsolute/actions-rust-cross@v0
+        with:
+          command: both
+          target: x86_64-apple-darwin
+          args: "--release"
+          strip: true
+
+      - name: Create ZIP (macOS)
+        run: |
+          zip -j rs-darwin-x86_64.zip target/x86_64-apple-darwin/release/rs
+          mkdir -p builds
+          mv rs-darwin-x86_64.zip builds/
+
+      - name: "Upload Artifact"
+        uses: actions/upload-artifact@v3
+        with:
+          name: release-builds
+          path: builds/rs-darwin-x86_64.zip
+          retention-days: 1

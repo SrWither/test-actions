@@ -1,0 +1,35 @@
+name: Release - Linux-x86_64-gnu
+
+on:
+  push:
+    tags-ignore:
+      - "nightly*"
+
+jobs:
+  build-linux:
+    runs-on: ubuntu-20.04
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Build binary
+        uses: houseabsolute/actions-rust-cross@v0
+        with:
+          command: build
+          target: x86_64-unknown-linux-gnu
+          args: "--release"
+          strip: true
+
+      - name: Create ZIP (Posix)
+        run: |
+          zip -j rs-linux-gnu-x86_64.zip target/x86_64-unknown-linux-gnu/release/rs
+          mkdir -p builds
+          mv rs-linux-gnu-x86_64.zip builds/
+
+      - name: "Upload Artifact"
+        uses: actions/upload-artifact@v3
+        with:
+          name: release-builds
+          path: builds/rs-linux-gnu-x86_64.zip
+          retention-days: 1
