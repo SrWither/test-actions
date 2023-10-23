@@ -1,69 +1,69 @@
-name: Deploy Nightly
+# name: Deploy Nightly
 
-on:
-  schedule:
-    - cron: '0 2 * * *'
+# on:
+#   schedule:
+#     - cron: '0 2 * * *'
 
-jobs:
-  build-windows:
-    runs-on: windows-latest
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v3
+# jobs:
+#   build-windows:
+#     runs-on: windows-latest
+#     steps:
+#       - name: Checkout
+#         uses: actions/checkout@v3
 
-      - name: Build Windows Release
-        uses: ./.github/workflows/deployment/nightly/windows
+#       - name: Build Windows Release
+#         uses: ./.github/workflows/deployment/nightly/windows
 
-  build-macos:
-    runs-on: macos-latest
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v3
+#   build-macos:
+#     runs-on: macos-latest
+#     steps:
+#       - name: Checkout
+#         uses: actions/checkout@v3
 
-      - name: Build MacOs Release
-        uses: ./.github/workflows/deployment/nightly/macos
+#       - name: Build MacOs Release
+#         uses: ./.github/workflows/deployment/nightly/macos
 
-  build-linux:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v3
+#   build-linux:
+#     runs-on: ubuntu-latest
+#     steps:
+#       - name: Checkout
+#         uses: actions/checkout@v3
 
-      - name: Build Linux Release
-        uses: ./.github/workflows/deployment/nightly/linux
+#       - name: Build Linux Release
+#         uses: ./.github/workflows/deployment/nightly/linux
 
-  # build-freebsd:
-  #   runs-on: macos-12
-  #   steps:
-  #     - name: Checkout
-  #       uses: actions/checkout@v3
-  #
-  #     - name: Build FreeBSD Release
-  #       uses: ./.github/workflows/deployment/nightly/freebsd
+#   # build-freebsd:
+#   #   runs-on: macos-12
+#   #   steps:
+#   #     - name: Checkout
+#   #       uses: actions/checkout@v3
+#   #
+#   #     - name: Build FreeBSD Release
+#   #       uses: ./.github/workflows/deployment/nightly/freebsd
 
 
-  deploy:
-    name: Deploy Release
-    needs:
-      - build-windows
-      - build-macos
-      - build-linux
-      # - build-freebsd
-    runs-on: ubuntu-20.04
-    steps:
-      - name: Download a single artifact
-        uses: actions/download-artifact@v3
-        with:
-          name: nightly-builds
-          path: builds
-      - name: Update Nightly Release
-        uses: andelf/nightly-release@main
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          tag_name: nightly
-          name: 'Deploy Nightly $$'
-          prerelease: true
-          body: 'TODO: Add nightly release notes'
-          files: |
-            ./builds/*.zip
+#   deploy:
+#     name: Deploy Release
+#     needs:
+#       - build-windows
+#       - build-macos
+#       - build-linux
+#       # - build-freebsd
+#     runs-on: ubuntu-20.04
+#     steps:
+#       - name: Download a single artifact
+#         uses: actions/download-artifact@v3
+#         with:
+#           name: nightly-builds
+#           path: builds
+#       - name: Update Nightly Release
+#         uses: andelf/nightly-release@main
+#         env:
+#           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+#         with:
+#           tag_name: nightly
+#           name: 'Deploy Nightly $$'
+#           prerelease: true
+#           body: 'TODO: Add nightly release notes'
+#           files: |
+#             ./builds/*.zip
