@@ -49,6 +49,7 @@ jobs:
       - build-windows
       - build-macos
       - build-linux
+      - build-freebsd
     runs-on: ubuntu-20.04
     steps:
     - name: Download a single artifact
