@@ -20,6 +20,7 @@ runs:
           strip: true
 
       - name: Create ZIP (Posix)
+        shell: bash
         run: |
           zip -j rs-linux-gnu-x86_64.zip target/x86_64-unknown-linux-gnu/release/rs
           mkdir -p builds

@@ -20,6 +20,7 @@ runs:
           strip: true
 
       - name: Create ZIP (Windows)
+        shell: pwsh
         run: |
           Compress-Archive -Path target/x86_64-pc-windows-msvc/release/rs.exe -Destination rs-windows-x86_64.zip
           if (!(Test-Path -Path "builds")) {

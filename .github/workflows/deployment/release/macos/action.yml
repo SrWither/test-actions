@@ -20,6 +20,7 @@ runs:
           strip: true
 
       - name: Create ZIP (macOS)
+        shell: bash
         run: |
           zip -j rs-darwin-x86_64.zip target/x86_64-apple-darwin/release/rs
           mkdir -p builds
