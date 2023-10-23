@@ -80,7 +80,7 @@ jobs:
     - name: Build in FreeBSD
       uses: vmactions/freebsd-vm@v0
       with:
-        release: 13.2
+        release: 13.1
         envs: 'BIN_NAME APP_NAME'
         usesh: true
         prepare: |
