@@ -23,7 +23,7 @@ runs:
           zip -j rs-freebsd-x86_64.zip target/release/rs
           zip -r rs-freebsd-x86_64.zip static
           mkdir -p builds
-          mv $APP_NAME builds/
+          mv rs-freebsd-x86_64.zip builds/
           cargo clean
 
     - name: 'Upload Artifact'
