@@ -64,7 +64,7 @@ jobs:
       - name: Create ZIP (Posix)
         if: matrix.platform.os != 'windows-latest'
         run: |
-          zip -r ${{ matrix.platform.name }}.zip target/${{ matrix.platform.target }}/release/${{ matrix.platform.bin }}
+          zip -j ${{ matrix.platform.name }}.zip target/${{ matrix.platform.target }}/release/${{ matrix.platform.bin }}
           mkdir -p builds
           mv ${{ matrix.platform.name }}.zip builds/
           
