@@ -5,10 +5,8 @@ on:
     tags-ignore:
       - "nightly*"
 
-jobs:
-  build-macos:
-    runs-on: macos-latest
-
+runs:
+    using: "composite"
     steps:
       - name: Checkout
         uses: actions/checkout@v3
