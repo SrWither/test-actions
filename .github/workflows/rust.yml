@@ -10,17 +10,17 @@ jobs:
     runs-on: windows-latest
     steps:
       - name: Build Windows Release
-        uses: ./.github/workflows/deployment/release/windows.yml
+        uses: ./.github/workflows/deployment/release/windows
   build-macos:
     runs-on: macos-latest
     steps:
       - name: Build MacOs Release
-        uses: ./.github/workflows/deployment/release/macos.yml
+        uses: ./.github/workflows/deployment/release/macos
   build-linux:
     runs-on: ubuntu-latest
     steps:
       - name: Build Linux Release
-        uses: ./.github/workflows/deployment/release/linux.yml
+        uses: ./.github/workflows/deployment/release/linux
   # freebsd:
 
 
